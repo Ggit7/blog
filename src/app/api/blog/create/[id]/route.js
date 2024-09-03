@@ -15,8 +15,10 @@ export async function POST(req, { params }) {
         const token = req.cookies.get('authtoken')?.value;
         if (!token) {
             return NextResponse.json({
-                message: "Authentication token not found",
+                message: "Authentication failed",
                 success: false,
+            },{
+                status:403,
             });
         }
 
