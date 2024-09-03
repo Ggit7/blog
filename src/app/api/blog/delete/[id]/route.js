@@ -5,10 +5,11 @@ import { NextResponse } from "next/server";
 
 connectDb()
 
-export async function GET(request,{params}){
+
+export async function DELETE(request,{params}){
     const {id}=params
-    const singleBlog=await Blog.findById(id)
-    if(!singleBlog){
+    const isBlog=await Blog.findOne({_id:id});
+    if(!isBlog){
         return NextResponse.json({
             message:"no blog found",
             success:false
@@ -17,9 +18,15 @@ export async function GET(request,{params}){
             status:404,
         });
     }
+    const deletedBlog=await Blog.findByIdAndDelete(id)
+    if(!deletedBlog){
     return NextResponse.json({
-        message:"blog fetched succesfully",
-        success:true,
-        data:singleBlog
+        message:"blog not delete succesfully",
+        success:false,
     })
+}
+return NextResponse.json({
+    message:"Blog Deleted",
+    success:true
+})
 }
